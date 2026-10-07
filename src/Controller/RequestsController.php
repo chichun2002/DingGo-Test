@@ -7,6 +7,7 @@ use Cake\Http\Client;
 use Cake\Collection\Collection;
 
 const CREDENTIALS = ['username' => 'tfischerdev@gmail.com', 'key' => 'tfischerdev',];
+const API_URL = 'https://app.dev.aws.dinggo.com.au/phptest/';
 
 
 /**
@@ -19,7 +20,7 @@ class RequestsController extends AppController
     {
         $client = new Client();
 
-        $response = $client->get("https://app.dev.aws.dinggo.com.au/phptest/test");
+        $response = $client->get(API_URL . 'test');
 
         debug($response);
     }
@@ -27,7 +28,7 @@ class RequestsController extends AppController
     {
         $client = new Client();
 
-        $response = $client->post("https://app.dev.aws.dinggo.com.au/phptest/testcreds", CREDENTIALS);
+        $response = $client->post(API_URL . 'testcreds', CREDENTIALS);
 
         debug($response->getStringBody());
     }
@@ -36,7 +37,7 @@ class RequestsController extends AppController
     {
         $client = new Client();
 
-        $response = $client->post("https://app.dev.aws.dinggo.com.au/phptest/cars", CREDENTIALS);
+        $response = $client->post(API_URL . 'cars', CREDENTIALS);
 
         $json = $response->getJson()['cars'];
 
@@ -52,7 +53,7 @@ class RequestsController extends AppController
     {
         $client = new Client();
 
-        $response = $client->post("https://app.dev.aws.dinggo.com.au/phptest/quotes", CREDENTIALS + [
+        $response = $client->post(API_URL . 'quotes', CREDENTIALS + [
             'license_plate' => $license_plate,
             'license_state' => $license_state,
         ]);
