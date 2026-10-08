@@ -1,0 +1,142 @@
+/* Cars list: one full-width card per car, title row on top, details row below. */
+
+#cars .car {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem 2rem;
+    background: var(--color-white);
+    border: 1px solid #e1e4e8;
+    border-left: 4px solid var(--color-cakephp-red);
+    border-radius: 0.4rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* Each row's items sit side by side on one line */
+#cars .car .title > div,
+#cars .car .details > div {
+    display: inline-block;
+    margin-right: 2rem;
+}
+
+#cars .car .title > div:last-child,
+#cars .car .details > div:last-child {
+    margin-right: 0;
+}
+
+/* Row 1: title */
+#cars .car .title {
+    padding-bottom: 0.8rem;
+    margin-bottom: 0.8rem;
+    border-bottom: 1px solid #eef0f3;
+}
+
+#cars .car .plate {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--color-headings);
+    letter-spacing: 0.05em;
+}
+
+#cars .car .model {
+    font-size: 1.6rem;
+    color: var(--color-cakephp-gray);
+}
+
+/* Row 2: details */
+#cars .car .details {
+    font-size: 1.4rem;
+    color: var(--color-lightgray);
+}
+
+#cars .car .vin {
+    font-family: monospace;
+}
+
+#cars .car .colour {
+    padding: 0.2rem 0.8rem;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+    color: var(--color-cakephp-gray);
+    background: #eef0f3;
+    border-radius: 1rem;
+    vertical-align: middle;
+}
+
+/* Quotes: one darker panel per quote inside the car card.
+   Spacing lives on .quote so cars with no quotes take up no extra room. */
+#cars .car .quote {
+    margin-top: 1rem;
+    padding: 1rem 1.5rem;
+    background: #eef1f5;
+    border-radius: 0.4rem;
+}
+
+#cars .car .quote-title > div {
+    display: inline-block;
+    margin-right: 1.5rem;
+}
+
+#cars .car .quote-title > div:last-child {
+    margin-right: 0;
+}
+
+#cars .car .repairer {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-headings);
+}
+
+#cars .car .price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-message-success-text);
+}
+
+#cars .car .quote-details {
+    margin-top: 0.4rem;
+    font-size: 1.4rem;
+    color: var(--color-lightgray);
+}
+
+/* States */
+#cars .loading,
+#cars .empty {
+    padding: 2rem;
+    text-align: center;
+    color: var(--color-lightgray);
+}
+
+/* Spinner drawn above the "Loading..." text, no extra markup needed */
+#cars .loading::before {
+    content: "";
+    display: block;
+    width: 3.2rem;
+    height: 3.2rem;
+    margin: 0 auto 1rem;
+    border: 3px solid #e1e4e8;
+    border-top-color: var(--color-cakephp-red);
+    border-radius: 50%;
+    animation: cars-spin 0.8s linear infinite;
+}
+
+@keyframes cars-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #cars .loading::before {
+        animation-duration: 2.4s;
+    }
+}
+
+#cars .error {
+    padding: 1.5rem 2rem;
+    color: var(--color-message-error-text);
+    background: var(--color-message-error-bg);
+    border: 1px solid var(--color-message-error-border);
+    border-radius: 0.4rem;
+}
