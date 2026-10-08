@@ -1,58 +1,70 @@
-# CakePHP Application Skeleton
+# DingGo Test
 
-![Build Status](https://github.com/cakephp/app/actions/workflows/ci.yml/badge.svg?branch=5.x)
-[![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
-[![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
+A CakePHP 5 app that pulls cars and their quotes from the DingGo API, stores them in MySQL, and lists them on a single page.
 
-A skeleton for creating applications with [CakePHP](https://cakephp.org) 5.x.
+## Requirements
 
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
+- Docker with Docker Compose
+- DingGo API credentials (username and key)
 
-## Installation
+## Setup
 
-1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
+### 1. Create `config/.env` (required)
 
-If Composer is installed globally, run
+The app reads the API credentials from `config/.env`. Without it, every API request fails and no cars are imported.
 
-```bash
-composer create-project --prefer-dist cakephp/app
+```
+USERNAME=your-dinggo-username
+KEY=your-dinggo-key
 ```
 
-In case you want to use a custom app dir name (e.g. `/myapp/`):
+This file is gitignored and is loaded by `config/bootstrap.php`. The same two lines are at the top of `config/.env.example`. Copy just those, not the whole file, because `compose.yaml` already sets `DEBUG` and the `.env` loader errors if a variable is defined twice.
+
+### 2. Start the containers
 
 ```bash
-composer create-project --prefer-dist cakephp/app myapp
+docker compose up -d --build
 ```
 
-You can now either use your machine's webserver to view the default home page, or start
-up the built-in webserver with:
+### 3. Install dependencies
 
 ```bash
-bin/cake server -p 8765
+docker compose exec app composer install
 ```
 
-Then visit `http://localhost:8765` to see the welcome page.
+This also creates `config/app_local.php` from `config/app_local.example.php`.
 
-## Demo app
+### 4. Create the database tables
 
-Check out the [5.x-demo branch](https://github.com/cakephp/app/tree/5.x-demo), which contains demo migrations and a seeder.
-See the [README](https://github.com/cakephp/app/blob/5.x-demo/README.md) on how to get it running.
+```bash
+docker compose exec app bin/cake migrations migrate
+```
 
-## Update
+### 5. Open the app
 
-Since this skeleton is a starting point for your application and various files
-would have been modified as per your needs, there isn't a way to provide
-automated upgrades, so you have to do any updates manually.
+Visit http://localhost:8765
 
-## Configuration
+## How it works
 
-Read and edit the environment specific `config/app_local.php` and set up the
-`'Datasources'` and any other configuration relevant for your application.
-Other environment agnostic settings can be changed in `config/app.php`.
+1. `/` renders the cars page with a loading spinner.
+2. The page fetches `/cars/cars`, which syncs with the DingGo API:
+   - Cars are matched by VIN, so re-importing updates existing rows instead of duplicating them.
+   - Each car's quotes are replaced in a single transaction.
+3. The resulting car cards are inserted into the page.
 
-## Layout
+## Useful info
 
-The app skeleton uses [Milligram](https://milligram.io/) (v1.3) minimalist CSS
-framework by default. You can, however, replace it with any other library or
-custom styles.
+| What | Where |
+| --- | --- |
+| App | http://localhost:8765 |
+| MySQL | `localhost:3307`, user `cake`, password `secret`, database `cake` |
+| Error log | `logs/error.log` |
+| Debug mode | `DEBUG` in `compose.yaml` (run `docker compose up -d` after changing it) |
+
+## Tests
+
+```bash
+docker compose exec app vendor/bin/phpunit
+```
+
+The tests use a separate `cake_test` database, which is created automatically by `docker/mysql-init/01-test-db.sql`.
