@@ -10,6 +10,7 @@ services:
     volumes:
       - .:/var/www/html
     environment:
+      DEBUG: "false"
       DATABASE_URL: mysql://cake:secret@db/cake
       DATABASE_TEST_URL: mysql://cake:secret@db/cake_test
     depends_on:
