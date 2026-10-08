@@ -17,16 +17,22 @@ class CarsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->loadComponent('Requests');
+    }
     public function index()
     {
-
     }
 
     public function cars()
     {
         $this->request->allowMethod(["get"]);
         $this->ViewBuilder()->disableAutoLayout();
-
+        
+        $this->Requests->update();
+        
         $cars = $this->fetchTable("Cars")->find();
         $quotes = $this->fetchTable("Quotes")->find()->all();
         $isEmpty = $cars->count() === 0;

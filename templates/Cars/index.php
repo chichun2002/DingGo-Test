@@ -1,7 +1,8 @@
 <?php $this->Html->css('cars', ['block' => true]); ?>
 
-<div class="container">
-    <div id="cars" class="container">
+<div>
+    <h1>Cars</h1>
+    <div id="cars">
         <div class="loading">Loading...</div>
     </div>
 </div>

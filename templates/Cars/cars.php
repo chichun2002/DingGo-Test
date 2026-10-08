@@ -13,7 +13,7 @@
                     <div class="vin">VIN: <?= h($car->vin) ?></div>
                 </div>
                 <div class="quotes">
-                    <?php 
+                    <?php
                         $car_quotes = $quotes->filter(fn ($quote) => $quote->car_id === $car->id)->sortBy('price', SORT_ASC);
                         foreach ($car_quotes as $quote): 
                     ?>
