@@ -28,8 +28,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/mysql-init:/docker-entrypoint-initdb.d:ro
-    # TODO(human): add a healthcheck so Compose knows when MySQL is actually
-    # ready, then change app's depends_on to wait for "service_healthy"
 
 volumes:
   db_data:
