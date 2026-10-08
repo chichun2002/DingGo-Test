@@ -34,7 +34,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('script') ?>
 </head>
 <body>
-    <nav class="top-nav">
+    <!-- <nav class="top-nav">
         <div class="top-nav-title">
             <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
         </div>
@@ -42,9 +42,9 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/">Documentation</a>
             <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
         </div>
-    </nav>
-    <main class="main">
-        <div class="container">
+    </nav> -->
+    <main>
+        <div>
             <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
         </div>
